@@ -1,0 +1,32 @@
+{
+  "name": "bookstore-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ShimantaBhuyan/bookstore-frontend#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShimantaBhuyan/bookstore-frontend.git"
+  },
+  "license": "ISC",
+  "author": "ShimantaKB",
+  "type": "module",
+  "scripts": {
+    "start": "next start",
+    "build": "next build",
+    "dev": "next dev"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.13.8",
+    "@apollo/client-integration-nextjs": "^0.12.2",
+    "@tailwindcss/postcss": "^4.1.10",
+    "next": "^15.3.4",
+    "postcss": "^8.5.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.10"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.0",
+    "prettier-plugin-tailwindcss": "^0.6.13"
+  }
+}
