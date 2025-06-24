@@ -11,7 +11,7 @@ function makeClient() {
   const httpLink = new HttpLink({
     uri:
       process.env.NODE_ENV === "production"
-        ? `https://${process.env.BASE_ENDPOINT}/api`
+        ? `https://${process.env.NEXT_PUBLIC_BASE_ENDPOINT}/api`
         : "http://localhost:4000/api",
   });
 
