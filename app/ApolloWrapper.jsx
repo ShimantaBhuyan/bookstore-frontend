@@ -9,7 +9,10 @@ import {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "http://localhost:4000/api",
+    uri:
+      process.env.NODE_ENV === "production"
+        ? "http://bookstore-server/api"
+        : "http://localhost:4000/api",
   });
 
   return new ApolloClient({
