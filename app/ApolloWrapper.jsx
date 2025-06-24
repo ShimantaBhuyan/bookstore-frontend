@@ -11,7 +11,7 @@ function makeClient() {
   const httpLink = new HttpLink({
     uri:
       process.env.NODE_ENV === "production"
-        ? "http://bookstore-server/api"
+        ? `https://${process.env.BASE_ENDPOINT}/api`
         : "http://localhost:4000/api",
   });
 
