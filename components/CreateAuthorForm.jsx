@@ -6,11 +6,14 @@ import { CREATE_AUTHOR } from "../graphql/books.mutations";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import FormError from "./ui/FormError";
+import DatePicker from "./ui/DatePicker";
+import FormSuccess from "./ui/FormSuccess";
 
-export default function CreateAuthorForm() {
+export default function CreateAuthorForm({ onSuccess }) {
   const [name, setName] = useState("");
   const [biography, setBiography] = useState("");
   const [bornDate, setBornDate] = useState("");
+  const [success, setSuccess] = useState("");
 
   const [createAuthor, { loading, error }] = useMutation(CREATE_AUTHOR, {
     refetchQueries: ["Authors"],
@@ -30,6 +33,9 @@ export default function CreateAuthorForm() {
     setName("");
     setBiography("");
     setBornDate("");
+    setSuccess("Author created successfully!");
+    if (onSuccess) onSuccess();
+    setTimeout(() => setSuccess(""), 2000);
   };
 
   return (
@@ -48,16 +54,16 @@ export default function CreateAuthorForm() {
         onChange={e => setBiography(e.target.value)}
         className="mr-2 mb-2"
       />
-      <Input
-        placeholder="Born Date"
+      <DatePicker
         value={bornDate}
-        onChange={e => setBornDate(e.target.value)}
-        className="mr-2 mb-2"
+        onChange={setBornDate}
+        className="mr-2 mb-2 w-fit"
       />
       <Button type="submit" disabled={loading}>
         {loading ? "Creating..." : "Create Author"}
       </Button>
       <FormError error={error} />
+      <FormSuccess message={success} />
     </form>
   );
 }

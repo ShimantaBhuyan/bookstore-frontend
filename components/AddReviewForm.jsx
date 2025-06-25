@@ -7,11 +7,13 @@ import Button from "./ui/Button";
 import Input from "./ui/Input";
 import FormError from "./ui/FormError";
 import StarRating from "./ui/StarRating";
+import FormSuccess from "./ui/FormSuccess";
 
 export default function AddReviewForm({ bookId }) {
   const [username, setUsername] = useState("");
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
+  const [success, setSuccess] = useState("");
 
   const [addReview, { loading, error }] = useMutation(ADD_REVIEW, {
     refetchQueries: [{ query: GET_BOOK, variables: { id: bookId } }],
@@ -32,6 +34,8 @@ export default function AddReviewForm({ bookId }) {
     setUsername("");
     setRating(5);
     setComment("");
+    setSuccess("Review added successfully!");
+    setTimeout(() => setSuccess(""), 2000);
   };
 
   return (
@@ -84,6 +88,7 @@ export default function AddReviewForm({ bookId }) {
         </Button>
       </div>
       <FormError error={error} />
+      <FormSuccess message={success} />
     </form>
   );
 }

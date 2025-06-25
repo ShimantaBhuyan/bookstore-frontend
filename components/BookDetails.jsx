@@ -28,9 +28,11 @@ export default function BookDetails({ bookId }) {
             className="mb-4 h-72 w-48 rounded border object-cover shadow"
           />
         ) : (
-          <div className="mb-4 flex h-72 w-48 items-center justify-center rounded border bg-gray-200">
-            No Image
-          </div>
+          <img
+            src="/assets/placeholder.png"
+            alt="No Cover Available"
+            className="mb-4 h-72 w-48 rounded border bg-gray-200 object-cover shadow"
+          />
         )}
       </div>
       {/* Book Details */}

@@ -8,13 +8,16 @@ import Button from "./ui/Button";
 import Input from "./ui/Input";
 import Select from "./ui/Select";
 import FormError from "./ui/FormError";
+import DatePicker from "./ui/DatePicker";
+import FormSuccess from "./ui/FormSuccess";
 
-export default function CreateBookForm() {
+export default function CreateBookForm({ onSuccess }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [publishedDate, setPublishedDate] = useState("");
   const [authorId, setAuthorId] = useState("");
   const [coverImageUrl, setCoverImageUrl] = useState("");
+  const [success, setSuccess] = useState("");
 
   const { data: authorsData } = useQuery(GET_AUTHORS);
   const [createBook, { loading, error }] = useMutation(CREATE_BOOK, {
@@ -39,6 +42,9 @@ export default function CreateBookForm() {
     setPublishedDate("");
     setAuthorId("");
     setCoverImageUrl("");
+    setSuccess("Book created successfully!");
+    if (onSuccess) onSuccess();
+    setTimeout(() => setSuccess(""), 2000);
   };
 
   return (
@@ -57,11 +63,10 @@ export default function CreateBookForm() {
         onChange={e => setDescription(e.target.value)}
         className="mr-2 mb-2"
       />
-      <Input
-        placeholder="Published Date"
+      <DatePicker
         value={publishedDate}
-        onChange={e => setPublishedDate(e.target.value)}
-        className="mr-2 mb-2"
+        onChange={setPublishedDate}
+        className="mr-2 mb-2 w-fit"
       />
       <Input
         placeholder="Cover Image URL"
@@ -99,6 +104,7 @@ export default function CreateBookForm() {
         {loading ? "Creating..." : "Create Book"}
       </Button>
       <FormError error={error} />
+      <FormSuccess message={success} />
     </form>
   );
 }
