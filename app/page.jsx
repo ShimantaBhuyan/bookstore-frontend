@@ -50,46 +50,43 @@ export default function Page() {
           </Button>
         </div>
         <div className="w-full rounded-xl bg-white p-6 shadow">
-          {tab === "books" && (
-            <>
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-2xl font-semibold">Books</h2>
-                <Button
-                  onClick={() => setShowBookModal(true)}
-                  variant="primary"
-                >
-                  + Add Book
-                </Button>
-              </div>
-              <BooksTable />
-              <Modal
-                open={showBookModal}
-                onClose={() => setShowBookModal(false)}
+          {/* Keep both tables mounted, toggle visibility with CSS */}
+          <div style={{ display: tab === "books" ? "block" : "none" }}>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-2xl font-semibold">Books</h2>
+              <Button
+                onClick={() => setShowBookModal(true)}
+                variant="primary"
               >
-                <CreateBookForm onSuccess={() => setShowBookModal(false)} />
-              </Modal>
-            </>
-          )}
-          {tab === "authors" && (
-            <>
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-2xl font-semibold">Authors</h2>
-                <Button
-                  onClick={() => setShowAuthorModal(true)}
-                  variant="primary"
-                >
-                  + Add Author
-                </Button>
-              </div>
-              <AuthorsTable />
-              <Modal
-                open={showAuthorModal}
-                onClose={() => setShowAuthorModal(false)}
+                + Add Book
+              </Button>
+            </div>
+            <BooksTable />
+            <Modal
+              open={showBookModal}
+              onClose={() => setShowBookModal(false)}
+            >
+              <CreateBookForm onSuccess={() => setShowBookModal(false)} />
+            </Modal>
+          </div>
+          <div style={{ display: tab === "authors" ? "block" : "none" }}>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-2xl font-semibold">Authors</h2>
+              <Button
+                onClick={() => setShowAuthorModal(true)}
+                variant="primary"
               >
-                <CreateAuthorForm onSuccess={() => setShowAuthorModal(false)} />
-              </Modal>
-            </>
-          )}
+                + Add Author
+              </Button>
+            </div>
+            <AuthorsTable />
+            <Modal
+              open={showAuthorModal}
+              onClose={() => setShowAuthorModal(false)}
+            >
+              <CreateAuthorForm onSuccess={() => setShowAuthorModal(false)} />
+            </Modal>
+          </div>
         </div>
       </div>
     </main>
