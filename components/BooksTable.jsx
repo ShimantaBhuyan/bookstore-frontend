@@ -6,11 +6,16 @@ import { GET_BOOKS } from "../graphql/booksQuery";
 import Pagination from "./ui/Pagination";
 import Link from "next/link";
 import Table from "./ui/Table";
+import Button from "./ui/Button";
+import Modal from "./ui/Modal";
+import EditBookForm from "./EditBookForm";
 
 export default function BooksTable() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
   const limit = 10;
   const offset = (page - 1) * limit;
 
@@ -34,6 +39,17 @@ export default function BooksTable() {
   const handleSearchChange = e => {
     console.log({ e });
     setSearchTerm(e.target.value);
+  };
+
+  const handleEditClick = (book) => {
+    setSelectedBook(book);
+    setShowEditModal(true);
+  };
+
+  const handleEditSuccess = () => {
+    setShowEditModal(false);
+    setSelectedBook(null);
+    refetch();
   };
 
   if (loading) return <div>Loading books...</div>;
@@ -72,12 +88,22 @@ export default function BooksTable() {
                   <td className="border px-2 py-1">{book.title}</td>
                   <td className="border px-2 py-1">{book.author?.name}</td>
                   <td className="border px-2 py-1">
-                    <Link
-                      href={`/books/${book.id}`}
-                      className="text-blue-600 underline"
-                    >
-                      Details
-                    </Link>
+                    <div className="flex gap-2">
+                      <Link
+                        href={`/books/${book.id}`}
+                        className="text-blue-600 underline"
+                      >
+                        Details
+                      </Link>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditClick(book)}
+                        className="px-2 py-1 text-xs"
+                      >
+                        Edit
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -86,6 +112,18 @@ export default function BooksTable() {
           <Pagination page={page} setPage={setPage} hasNext={hasNext} />
         </>
       )}
+      
+      <Modal
+        open={showEditModal}
+        onClose={() => setShowEditModal(false)}
+      >
+        {selectedBook && (
+          <EditBookForm 
+            book={selectedBook} 
+            onSuccess={handleEditSuccess} 
+          />
+        )}
+      </Modal>
     </section>
   );
 }

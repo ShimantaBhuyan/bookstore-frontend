@@ -1,15 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_BOOK } from "../graphql/bookDetailsQuery";
 import AddReviewForm from "./AddReviewForm";
 import StarRating from "./ui/StarRating";
 import Link from "next/link";
+import Button from "./ui/Button";
+import Modal from "./ui/Modal";
+import EditBookForm from "./EditBookForm";
 
 export default function BookDetails({ bookId }) {
-  const { data, loading, error } = useQuery(GET_BOOK, {
+  const [showEditModal, setShowEditModal] = useState(false);
+  
+  const { data, loading, error, refetch } = useQuery(GET_BOOK, {
     variables: { id: bookId },
   });
+
+  const handleEditSuccess = () => {
+    setShowEditModal(false);
+    refetch();
+  };
 
   if (loading) return <div>Loading book...</div>;
   if (error) return <div>Error loading book.</div>;
@@ -37,7 +48,16 @@ export default function BookDetails({ bookId }) {
       </div>
       {/* Book Details */}
       <div className="flex flex-1 flex-col gap-2">
-        <h1 className="mb-1 text-3xl font-bold">{book.title}</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="mb-1 text-3xl font-bold">{book.title}</h1>
+          <Button
+            variant="outline"
+            onClick={() => setShowEditModal(true)}
+            className="ml-4"
+          >
+            Edit Book
+          </Button>
+        </div>
         <p className="mb-2 text-lg text-gray-700">
           by{" "}
           <Link
@@ -109,6 +129,16 @@ export default function BookDetails({ bookId }) {
           <p>No ratings</p>
         )}
       </div>
+      
+      <Modal
+        open={showEditModal}
+        onClose={() => setShowEditModal(false)}
+      >
+        <EditBookForm 
+          book={book} 
+          onSuccess={handleEditSuccess} 
+        />
+      </Modal>
     </section>
   );
 }

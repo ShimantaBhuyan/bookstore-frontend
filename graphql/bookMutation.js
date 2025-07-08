@@ -16,9 +16,28 @@ export const CREATE_BOOK = gql`
   ${AUTHOR_BASIC_FRAGMENT}
 `;
 
+export const EDIT_BOOK = gql`
+  mutation EditBook($input: EditBookInput!) {
+    editBook(input: $input) {
+      id
+      title
+      description
+    }
+  }
+`;
+
 export const CREATE_AUTHOR = gql`
   mutation CreateAuthor($input: AuthorInput!) {
     createAuthor(input: $input) {
+      ...AuthorFull
+    }
+  }
+  ${AUTHOR_FULL_FRAGMENT}
+`;
+
+export const EDIT_AUTHOR = gql`
+  mutation EditAuthor($input: EditAuthorInput!) {
+    editAuthor(input: $input) {
       ...AuthorFull
     }
   }

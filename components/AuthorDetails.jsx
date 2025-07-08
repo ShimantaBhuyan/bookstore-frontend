@@ -1,13 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import { GET_AUTHOR } from "../graphql/authorDetailsQuery";
+import Button from "./ui/Button";
+import Modal from "./ui/Modal";
+import EditAuthorForm from "./EditAuthorForm";
 
 export default function AuthorDetails({ authorId }) {
-  const { data, loading, error } = useQuery(GET_AUTHOR, {
+  const [showEditModal, setShowEditModal] = useState(false);
+  
+  const { data, loading, error, refetch } = useQuery(GET_AUTHOR, {
     variables: { id: authorId },
   });
+
+  const handleEditSuccess = () => {
+    setShowEditModal(false);
+    refetch();
+  };
 
   if (loading) return <div>Loading author...</div>;
   if (error) return <div>Error loading author.</div>;
@@ -19,7 +30,16 @@ export default function AuthorDetails({ authorId }) {
     <section className="flex flex-col gap-8 rounded bg-white p-6 shadow-md md:flex-row">
       {/* Author Info */}
       <div className="flex flex-col gap-2 md:w-1/3">
-        <h1 className="mb-1 text-3xl font-bold">{author.name}</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="mb-1 text-3xl font-bold">{author.name}</h1>
+          <Button
+            variant="outline"
+            onClick={() => setShowEditModal(true)}
+            className="ml-4"
+          >
+            Edit Author
+          </Button>
+        </div>
         {author.born_date && (
           <p className="mb-1 text-sm text-gray-700">Born: {author.born_date}</p>
         )}
@@ -55,6 +75,16 @@ export default function AuthorDetails({ authorId }) {
           </ul>
         )}
       </div>
+      
+      <Modal
+        open={showEditModal}
+        onClose={() => setShowEditModal(false)}
+      >
+        <EditAuthorForm 
+          author={author} 
+          onSuccess={handleEditSuccess} 
+        />
+      </Modal>
     </section>
   );
 }
