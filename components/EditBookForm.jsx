@@ -40,7 +40,7 @@ export default function EditBookForm({ book, onSuccess }) {
           id: book.id,
           title,
           description,
-          coverImageUrl
+          cover_image_url: coverImageUrl,
         },
       },
     });
