@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_REVIEW, GET_BOOK } from "../graphql/book.details.queries";
+import { ADD_REVIEW, GET_BOOK } from "../graphql/bookDetailsQuery";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import FormError from "./ui/FormError";

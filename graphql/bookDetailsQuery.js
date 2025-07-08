@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { AUTHOR_BASIC_FRAGMENT, REVIEW_FRAGMENT } from "./fragments";
 
 export const GET_BOOK = gql`
   query Book($id: ID!) {
@@ -8,21 +9,19 @@ export const GET_BOOK = gql`
       description
       published_date
       author {
-        id
-        name
+        ...AuthorBasic
       }
       metadata {
         reviews {
-          username
-          rating
-          comment
-          createdAt
+          ...Review
         }
         average_rating
         cover_image_url
       }
     }
   }
+  ${AUTHOR_BASIC_FRAGMENT}
+  ${REVIEW_FRAGMENT}
 `;
 
 export const ADD_REVIEW = gql`
@@ -30,12 +29,10 @@ export const ADD_REVIEW = gql`
     addReview(input: $input) {
       bookId
       reviews {
-        username
-        rating
-        comment
-        createdAt
+        ...Review
       }
       average_rating
     }
   }
+  ${REVIEW_FRAGMENT}
 `;

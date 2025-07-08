@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { AUTHOR_BASIC_FRAGMENT, AUTHOR_FULL_FRAGMENT } from "./fragments";
 
 export const CREATE_BOOK = gql`
   mutation CreateBook($input: BookInput!) {
@@ -8,20 +9,18 @@ export const CREATE_BOOK = gql`
       description
       published_date
       author {
-        id
-        name
+        ...AuthorBasic
       }
     }
   }
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const CREATE_AUTHOR = gql`
   mutation CreateAuthor($input: AuthorInput!) {
     createAuthor(input: $input) {
-      id
-      name
-      biography
-      born_date
+      ...AuthorFull
     }
   }
+  ${AUTHOR_FULL_FRAGMENT}
 `;

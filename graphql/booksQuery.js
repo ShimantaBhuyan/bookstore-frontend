@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { AUTHOR_BASIC_FRAGMENT } from "./fragments";
 
 export const GET_BOOKS = gql`
   query Books(
@@ -19,11 +20,11 @@ export const GET_BOOKS = gql`
         description
         published_date
         author {
-          id
-          name
+          ...AuthorBasic
         }
       }
       totalCount
     }
   }
+  ${AUTHOR_BASIC_FRAGMENT}
 `;

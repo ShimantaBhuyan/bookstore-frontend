@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
-import { GET_BOOKS } from "../graphql/books.queries";
+import { GET_BOOKS } from "../graphql/booksQuery";
 import Pagination from "./ui/Pagination";
 import Link from "next/link";
 import Table from "./ui/Table";

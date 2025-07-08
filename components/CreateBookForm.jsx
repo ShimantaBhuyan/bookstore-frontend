@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_BOOK } from "../graphql/books.mutations";
-import { GET_AUTHORS } from "../graphql/authors.queries";
+import { CREATE_BOOK } from "../graphql/bookMutation";
+import { GET_AUTHORS } from "../graphql/authorsQuery";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import Select from "./ui/Select";

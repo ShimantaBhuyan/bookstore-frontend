@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_AUTHOR } from "../graphql/books.mutations";
+import { CREATE_AUTHOR } from "../graphql/bookMutation";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import FormError from "./ui/FormError";

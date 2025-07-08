@@ -2,7 +2,7 @@
 
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import { GET_AUTHOR } from "../graphql/author.details.queries";
+import { GET_AUTHOR } from "../graphql/authorDetailsQuery";
 
 export default function AuthorDetails({ authorId }) {
   const { data, loading, error } = useQuery(GET_AUTHOR, {

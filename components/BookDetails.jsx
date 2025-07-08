@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import { GET_BOOK } from "../graphql/book.details.queries";
+import { GET_BOOK } from "../graphql/bookDetailsQuery";
 import AddReviewForm from "./AddReviewForm";
 import StarRating from "./ui/StarRating";
 import Link from "next/link";
