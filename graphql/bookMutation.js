@@ -22,8 +22,15 @@ export const EDIT_BOOK = gql`
       id
       title
       description
+      author {
+        ...AuthorBasic
+      }
+      metadata {
+        cover_image_url
+      }
     }
   }
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const CREATE_AUTHOR = gql`

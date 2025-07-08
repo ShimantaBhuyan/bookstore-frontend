@@ -6,6 +6,7 @@ import { EDIT_BOOK } from "../graphql/bookMutation";
 import { GET_AUTHORS } from "../graphql/authorsQuery";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
+import Select from "./ui/Select";
 import FormError from "./ui/FormError";
 import DatePicker from "./ui/DatePicker";
 import FormSuccess from "./ui/FormSuccess";
@@ -13,7 +14,7 @@ import FormSuccess from "./ui/FormSuccess";
 export default function EditBookForm({ book, onSuccess }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [_, setAuthorId] = useState("");
+  const [authorId, setAuthorId] = useState("");
   const [coverImageUrl, setCoverImageUrl] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -40,7 +41,8 @@ export default function EditBookForm({ book, onSuccess }) {
           id: book.id,
           title,
           description,
-          cover_image_url: coverImageUrl,
+          authorId,
+          ...(coverImageUrl != "" ? {cover_image_url: coverImageUrl} : {})
         },
       },
     });
@@ -80,10 +82,23 @@ export default function EditBookForm({ book, onSuccess }) {
           />
         </div>
       )}
+      <Select
+        value={authorId}
+        onChange={e => setAuthorId(e.target.value)}
+        required
+        className="mr-2 mb-2"
+      >
+        <option value="">Select Author</option>
+        {authorsData?.authors?.map(author => (
+          <option key={author.id} value={author.id}>
+            {author.name}
+          </option>
+        ))}
+      </Select>
       <Button
         type="submit"
         variant="primary"
-        disabled={loading || !authorsData?.authors?.length}
+        disabled={loading || !authorId || !authorsData?.authors?.length}
       >
         {loading ? "Updating..." : "Update Book"}
       </Button>
