@@ -64,8 +64,6 @@ export default function EditAuthorForm({ author, onSuccess }) {
         value={bornDate}
         onChange={setBornDate}
         className="mr-2 mb-2 w-fit"
-        disabled
-        title="Birth date cannot be changed"
       />
       <Button type="submit" disabled={loading}>
         {loading ? "Updating..." : "Update Author"}

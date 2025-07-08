@@ -69,8 +69,6 @@ export default function EditBookForm({ book, onSuccess }) {
         value={coverImageUrl}
         onChange={e => setCoverImageUrl(e.target.value)}
         className="mr-2 mb-2"
-        disabled
-        title="Cover image cannot be changed"
       />
       {coverImageUrl && (
         <div className="mb-2">
