@@ -14,7 +14,7 @@ export default function Page() {
   const [showAuthorModal, setShowAuthorModal] = useState(false);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-white">
+    <main className="flex min-h-screen flex-col items-center bg-white">
       <div className="mx-auto flex w-full flex-col items-center py-16">
         <div className="mb-8 flex flex-col items-center">
           <span className="mb-2 rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-700">

@@ -49,7 +49,7 @@ export default function AuthorsTable() {
                 <tr key={author.id}>
                   <td className="border px-2 py-1">{author.name}</td>
                   <td className="border px-2 py-1">
-                    <div className="flex gap-2">
+                    <div className="flex gap-4 items-end">
                       <Link
                         href={`/authors/${author.id}`}
                         className="text-blue-600 underline"

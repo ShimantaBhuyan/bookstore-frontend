@@ -21,7 +21,8 @@ export default function BooksTable() {
 
   const { data, loading, error, refetch } = useQuery(GET_BOOKS, {
     variables: { offset, limit, searchTerm: debouncedSearch || undefined },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: true,
   });
 
   useEffect(() => {
@@ -32,9 +33,8 @@ export default function BooksTable() {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  useEffect(() => {
-    refetch({ offset: 0, limit, searchTerm: debouncedSearch || undefined });
-  }, [debouncedSearch, refetch, limit]);
+  // Remove the redundant refetch useEffect since the query will automatically
+  // re-run when debouncedSearch changes due to the variables dependency
 
   const handleSearchChange = e => {
     console.log({ e });
@@ -52,9 +52,7 @@ export default function BooksTable() {
     refetch();
   };
 
-  if (loading) return <div>Loading books...</div>;
-  if (error) return <div>Error loading books.</div>;
-
+  // Don't replace the entire UI with loading state
   const books = data?.books?.books || [];
   const totalCount = data?.books?.totalCount || 0;
   const hasNext = offset + books.length < totalCount;
@@ -70,45 +68,57 @@ export default function BooksTable() {
           className="w-64 rounded border px-2 py-1"
         />
       </div>
-      {books.length === 0 ? (
+      
+      {error && <div className="text-red-500">Error loading books: {error.message}</div>}
+      
+      {loading && books.length === 0 ? (
+        <div className="text-gray-500">Loading books...</div>
+      ) : books.length === 0 ? (
         <div className="text-gray-500">No books available.</div>
       ) : (
         <>
-          <Table>
-            <thead>
-              <tr>
-                <th className="border px-2 py-1">Title</th>
-                <th className="border px-2 py-1">Author</th>
-                <th className="border px-2 py-1">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {books.map(book => (
-                <tr key={book.id}>
-                  <td className="border px-2 py-1">{book.title}</td>
-                  <td className="border px-2 py-1">{book.author?.name}</td>
-                  <td className="border px-2 py-1">
-                    <div className="flex gap-2">
-                      <Link
-                        href={`/books/${book.id}`}
-                        className="text-blue-600 underline"
-                      >
-                        Details
-                      </Link>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditClick(book)}
-                        className="px-2 py-1 text-xs"
-                      >
-                        Edit
-                      </Button>
-                    </div>
-                  </td>
+          <div className="relative">
+            {loading && (
+              <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+                <div className="text-gray-500">Updating...</div>
+              </div>
+            )}
+            <Table>
+              <thead>
+                <tr>
+                  <th className="border px-2 py-1">Title</th>
+                  <th className="border px-2 py-1">Author</th>
+                  <th className="border px-2 py-1">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {books.map(book => (
+                  <tr key={book.id}>
+                    <td className="border px-2 py-1">{book.title}</td>
+                    <td className="border px-2 py-1">{book.author?.name}</td>
+                    <td className="border px-2 py-1">
+                      <div className="flex gap-4 items-end">
+                        <Link
+                          href={`/books/${book.id}`}
+                          className="text-blue-600 underline"
+                        >
+                          Details
+                        </Link>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditClick(book)}
+                          className="px-2 py-1 text-xs"
+                        >
+                          Edit
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
           <Pagination page={page} setPage={setPage} hasNext={hasNext} />
         </>
       )}
